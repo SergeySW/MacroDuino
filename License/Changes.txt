@@ -1,0 +1,2 @@
+7/4/2011 - initial commit to github
+8/9/2011 - unify macro setting functions into 1 function. saves 2kb
