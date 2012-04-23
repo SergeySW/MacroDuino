@@ -45,13 +45,13 @@ void controlPCF8574A(byte device, byte pin_status, byte pin) {
   if(pin_status == 0) {
     pcf8574a_states[device] |= (1 << pin);
     Wire.beginTransmission(pcf8574a_addresses[device]);
-    Wire.send(pcf8574a_states[device]);
+    Wire.write(pcf8574a_states[device]);
     Wire.endTransmission();
   }
   else if(pin_status == 1) {
     pcf8574a_states[device] &= ~(1 << pin);
     Wire.beginTransmission(pcf8574a_addresses[device]);
-    Wire.send(pcf8574a_states[device]);
+    Wire.write(pcf8574a_states[device]);
     Wire.endTransmission();    
   }
 }

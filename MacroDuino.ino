@@ -9,7 +9,7 @@ Andrew Oke - andrew@practicalmaker.com
 
 #define DIGITALPINSENABLED 1 //enable digitalRead and digitalWrite and analogWrite using the control functions
 #define ANALOGENABLED 1 //enable reading analog pins (doesn't need to be enabled to read pH)
-#define DS18B20ENABLED 1 //enable reading ds18b20 temp sensors
+#define DS18B20ENABLED 0 //enable reading ds18b20 temp sensors
  
 #define I2CLCDENABLED 1 //Not Defined in orginal code
 #define DS1307ENABLED 1 //Not Defined in orginal code
@@ -38,22 +38,22 @@ Andrew Oke - andrew@practicalmaker.com
 #define PACHUBE_RESET_INTERVAL             30000    // if connection fails/resets wait 30 seconds before trying again - should not be less than 5  
 #endif
 
-#include <WProgram.h> // needs to be enabled
+#include <Arduino.h> // needs to be enabled
 #include <EEPROM.h> // needs to be enabled
 #include <Wire.h>
 //#include <SD.h>
 #include <SPI.h>
 //#include <Ethernet.h>
-#include <Tlc5940.h>
+//#include <Tlc5940.h>
 //#include <tlc_animations.h>
 //#include <tlc_config.h>
 //#include <tlc_fades.h>
 //#include <tlc_progmem_utils.h>
 //#include <tlc_servos.h>
 //#include <tlc_shifts.h>
-#include <OneWire.h>
-#include <I2CLCD.h>
-#include <DS1307.h>
+//#include <OneWire.h>
+//#include <I2CLCD.h>
+//#include <DS1307.h>
 #include "variables.h"
 #include "freemem.h"
 #include "supportFunctions.h"
