@@ -1,4 +1,4 @@
-char *control(char commandString[]) {
+char *control(char *commandString) {
   //TODO figure out scope so I don't need to redeclare heres
   #ifdef I2CLCD_h
   I2CLCD lcd = I2CLCD(0x12, 20, 4);
@@ -25,7 +25,36 @@ char *control(char commandString[]) {
   byte commandToken = atoi(strtok(commandString, "/"));
 
   if(commandToken == 255) {
-    itoa(EEPROM.read(ARDUINO_MEM_ADDR), returnData, 10);
+    itoa(EEPROM.read(ARDUINO_MEM_ADDR), itoa_buffer, 10);
+    
+    counter = 0;
+
+    returnData[counter] = '{';
+    counter++;
+    returnData[counter] = 'A';
+    counter++;
+    returnData[counter] = 'D';
+    counter++;
+    returnData[counter] = 'R';
+    counter++;
+    returnData[counter] = ':';
+    counter++;
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '}';
+    counter++;
+    
+    delay(1);
 
     return returnData;
   }
