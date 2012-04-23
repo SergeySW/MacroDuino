@@ -7,8 +7,7 @@
 #define DS1307_h
 
 // include types & constants of Wiring core API
-
-#include "Arduino.h"
+#include <Arduino.h>
 
 // include types & constants of Wire ic2 lib
 #include <../Wire/Wire.h>
@@ -62,3 +61,4 @@ extern DS1307 RTC;
 
 #endif
  
+

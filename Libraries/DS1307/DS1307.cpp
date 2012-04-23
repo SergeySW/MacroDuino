@@ -1,13 +1,7 @@
-#include "Arduino.h"
-
 extern "C" {
-#include <Wire.h>
-#include <avr/pgmspace.h>
+#include <../Wire/Wire.h>
 }
-
 #include "DS1307.h"
-
-
 
 DS1307::DS1307()
 {
@@ -25,7 +19,7 @@ void DS1307::read(void)
   // use the Wire lib to connect to tho rtc
   // reset the resgiter pointer to zero
   Wire.beginTransmission(DS1307_CTRL_ID);
-  Wire.write((uint8_t)0x00);
+  Wire.send(0x00);
   Wire.endTransmission();
 
   // request the 7 bytes of data    (secs, min, hr, dow, date. mth, yr)
@@ -33,7 +27,7 @@ void DS1307::read(void)
   for(int i=0; i<7; i++)
   {
     // store data in raw bcd format
-    rtc_bcd[i]=Wire.read();
+    rtc_bcd[i]=Wire.receive();
   }
 }
 
@@ -41,10 +35,10 @@ void DS1307::read(void)
 void DS1307::save(void)
 {
   Wire.beginTransmission(DS1307_CTRL_ID);
-  Wire.write((byte)0x00); // reset register pointer
+  Wire.send(0x00); // reset register pointer
   for(int i=0; i<7; i++)
   {
-    Wire.write(rtc_bcd[i]);
+    Wire.send(rtc_bcd[i]);
   }
   Wire.endTransmission();
 }
@@ -166,3 +160,5 @@ void DS1307::start(void)
   rtc_bcd[DS1307_SEC]=0;
   save();
 }
+
+
