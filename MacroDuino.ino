@@ -2,10 +2,10 @@
 Andrew Oke - andrew@practicalmaker.com
  */
 //debugging stuff. if you add serial.prints try and wrap them in #if DEBUG == 1 that way they can be turned off in production code
-#define DEBUG 1
+#define DEBUG 0
 #define DEBUGFREEMEMORY 0
-#define DEBUGETHERNETQUERYSTRING 1
-#define DEBUGETHERNETRETURNDATA 1
+#define DEBUGETHERNETQUERYSTRING 0
+#define DEBUGETHERNETRETURNDATA 0
 
 #define DIGITALPINSENABLED 1 //enable digitalRead and digitalWrite and analogWrite using the control functions
 #define ANALOGENABLED 1 //enable reading analog pins (doesn't need to be enabled to read pH)
@@ -43,7 +43,7 @@ Andrew Oke - andrew@practicalmaker.com
 #include <Wire.h>
 //#include <SD.h>
 #include <SPI.h>
-//#include <Ethernet.h>
+#include <Ethernet.h>
 //#include <Tlc5940.h>
 //#include <tlc_animations.h>
 //#include <tlc_config.h>
@@ -53,7 +53,7 @@ Andrew Oke - andrew@practicalmaker.com
 //#include <tlc_shifts.h>
 #include <OneWire.h>
 //#include <I2CLCD.h>
-//#include <DS1307.h>
+#include <DS1307.h>
 #include "variables.h"
 #include "freemem.h"
 #include "supportFunctions.h"
@@ -72,7 +72,7 @@ byte subnet[] = { 255, 255, 255, 0 };
 #endif
 
 #ifdef ethernet_h
-Server server(80);
+EthernetServer server(80);
 #endif
 
 #ifdef I2CLCD_h
@@ -125,7 +125,7 @@ void loop() {
   }
   
   #ifdef ethernet_h
-  Client client = server.available();
+  EthernetClient client = server.available();
   if (client) {
     Serial.print("cond: ");
     Serial.println(client);

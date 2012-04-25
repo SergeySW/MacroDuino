@@ -1,12 +1,12 @@
 #ifdef client_h
 void ethernetWiznetW5100Interface() {
-  Server server(80);
+  EthernetServer server(80);
   char ethernetCommandString[BUFFERSIZE];
   int index = 0;
   char *ethernetReturnData;
 
   // listen for incoming clients
-  Client client = server.available();
+  EthernetClient client = server.available();
   if (client) {
     //  reset input buffer
     index = 0;
@@ -34,8 +34,9 @@ void ethernetWiznetW5100Interface() {
 
         commandString = strtok(ethernetCommandString, " ");
         commandString = strtok(NULL, "?");
-        jsonpCallback = strtok(NULL, "=");     
-        jsonpCallback = strtok(NULL, " ");
+        jsonpCallback = strtok(NULL, "=");
+        jsonpCallback = strtok(NULL, "&");        
+
 
         String jsonpCallbackString = String(jsonpCallback);
         
@@ -57,15 +58,15 @@ void ethernetWiznetW5100Interface() {
         
         #if DEBUGETHERNETRETURNDATA == 1
           Serial.print(jsonpCallbackString);
-          Serial.print("({VALUE:");
+          Serial.print("(");
           Serial.print(ethernetReturnData);
-          Serial.println("})");          
+          Serial.println(")");          
         #endif
 
         client.print(jsonpCallbackString);
-        client.print("({VALUE:");
+        client.print("(");
         client.print(ethernetReturnData);
-        client.println("})");
+        client.println(");");
        
         break;
 

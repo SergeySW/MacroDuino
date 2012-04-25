@@ -1,7 +1,7 @@
 #define ARDUINO_MEM_ADDR 0
 
-#define BUFFERSIZE 50
-#define RETURNDATABUFFERSIZE 250
+#define BUFFERSIZE 80
+#define RETURNDATABUFFERSIZE 200
 
 
 //PH_GAIN = 4000mv / (59.2 * 7) where 4000mv is the max output of the BNC sensor shield circuit

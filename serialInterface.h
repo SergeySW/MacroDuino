@@ -18,7 +18,7 @@ void serialInterface() {
 
   serialReturnData = control(serialCommandString);
      
-  Serial.print(serialReturnData);
+  Serial.println(serialReturnData);
 
   return;
 }

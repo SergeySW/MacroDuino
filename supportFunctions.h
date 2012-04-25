@@ -271,7 +271,7 @@ void runDS1307Macro(unsigned int mem_address){
         else {
 #if DEBUG == 1
           Serial.print("PWM On at: ");
-          Serial.println(EEPROM.read(mem_address + 8), BYTE);
+          Serial.println(EEPROM.read(mem_address + 8));
 #endif
           analogWrite(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 8));
         }
@@ -302,10 +302,11 @@ int discoverOneWireDevices() {
   while(ds.search(addr)) {
 
     e = onewire_addresses_memstart + (d * onewire_addresses_bytes);
-
+    
     for( i = 0; i < 8; i++) {
 
       EEPROM.write((e + i), addr[i]);
+      Serial.println(addr[i]);
     }
 
     if ( OneWire::crc8( addr, 7) != addr[7]) {

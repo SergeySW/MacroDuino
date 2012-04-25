@@ -31,14 +31,20 @@ char *control(char *commandString) {
 
     returnData[counter] = '{';
     counter++;
+    returnData[counter] = '"';
+    counter++;    
     returnData[counter] = 'A';
     counter++;
     returnData[counter] = 'D';
     counter++;
     returnData[counter] = 'R';
     counter++;
+    returnData[counter] = '"';
+    counter++;    
     returnData[counter] = ':';
     counter++;
+    returnData[counter] = '"';
+    counter++;    
     if(itoa_buffer[0] != NULL) {
       returnData[counter] = itoa_buffer[0];
       counter++;
@@ -51,6 +57,8 @@ char *control(char *commandString) {
       returnData[counter] = itoa_buffer[2];
       counter++;
     }
+    returnData[counter] = '"';
+    counter++;    
     returnData[counter] = '}';
     counter++;
     
@@ -58,7 +66,7 @@ char *control(char *commandString) {
 
     return returnData;
   }
-
+  //TODO
   if(commandToken == 1) {
     byte address = atoi(strtok(NULL, "/"));
 
@@ -71,8 +79,6 @@ char *control(char *commandString) {
     returnData[counter] = '{';
     counter++;
     returnData[counter] = 'A';
-    counter++;
-    returnData[counter] = 'D';
     counter++;
     returnData[counter] = 'D';
     counter++;
@@ -121,17 +127,9 @@ char *control(char *commandString) {
     counter++;
     returnData[counter] = 'T';
     counter++;
-    returnData[counter] = 'M';
+    returnData[counter] = ':';
     counter++;
-    returnData[counter] = 'A';
-    counter++;
-    returnData[counter] = 'C';
-    counter++;
-    returnData[counter] = 'R';
-    counter++;
-    returnData[counter] = 'O';
-    counter++;
-    returnData[counter] = 'S';
+    returnData[counter] = 'Y';
     counter++;
     returnData[counter] = '"';
     counter++;    

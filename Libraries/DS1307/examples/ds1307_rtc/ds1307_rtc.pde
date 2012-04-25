@@ -2,17 +2,28 @@
  *
  *Created by D. Sjunnesson 1scale1.com d.sjunnesson (at) 1scale1.com
  *
- *Created with combined information from 
+ *Created with combined information from
  *http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1180908809
  *http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1191209057
  *
  *
- *Big credit to  mattt (please contact me for a more correct name...) from the Arduino forum 
+ *Big credit to  mattt (please contact me for a more correct name...) from the Arduino forum
  *which has written the main part of the library which I have modified
+ *
+ *Modified 21-feb-2012 by bricofoy : bugfixes and arduino 1.0 compatibility
+ *   bricofoy (at) free (dot) fr
  *
  */
 
-#include <WProgram.h>
+
+// This is for compatibility with both arduino 1.0 and previous versions
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
+
+
 #include <Wire.h>
 #include <DS1307.h> // written by  mattt on the Arduino forum and modified by D. Sjunnesson
 
@@ -45,7 +56,7 @@ void loop()
   Serial.print("/");
   Serial.print(RTC.get(DS1307_MTH,false));//read month
   Serial.print("/");
-  Serial.print(RTC.get(DS1307_YR,false)); //read year 
+  Serial.print(RTC.get(DS1307_YR,false)); //read year
   Serial.println();
 
   delay(1000);
