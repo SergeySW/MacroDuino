@@ -66,7 +66,7 @@ char *control(char *commandString) {
 
     return returnData;
   }
-  //TODO
+
   if(commandToken == 1) {
     byte address = atoi(strtok(NULL, "/"));
 
@@ -115,7 +115,7 @@ char *control(char *commandString) {
 
     counter = 0;
 
-    returnData[counter] = '"';
+    returnData[counter] = '{';
     counter++;
     returnData[counter] = 'R';
     counter++;
@@ -129,9 +129,13 @@ char *control(char *commandString) {
     counter++;
     returnData[counter] = ':';
     counter++;
+    returnData[counter] = '"';
+    counter++;    
     returnData[counter] = 'Y';
     counter++;
     returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = '}';
     counter++;    
     delay(1);    
 
@@ -1058,6 +1062,7 @@ char *control(char *commandString) {
   }
 #endif 
 
+#if OneWire_h
 #if DS18B20ENABLED == 1
   if(commandToken == 15){
     char *chartemp_sensor_num = strtok(NULL, "/");
@@ -1157,6 +1162,7 @@ char *control(char *commandString) {
     return returnData;		
   }
 #endif 
+#endif
 
 #ifdef I2CLCD_h
 #ifdef DS1307_h

@@ -10,7 +10,6 @@ void ethernetWiznetW5100Interface() {
   if (client) {
     //  reset input buffer
     index = 0;
-   Serial.println(client);
     while (client.connected()) {
       if (client.available()) {
         char c = client.read();
@@ -23,8 +22,7 @@ void ethernetWiznetW5100Interface() {
           //  if we run out of buffer, overwrite the end
           if(index >= BUFFERSIZE)
             index = BUFFERSIZE -1;
-
-          continue;
+            continue;
         }         
 
         char *commandString;
@@ -49,8 +47,6 @@ void ethernetWiznetW5100Interface() {
         
         delay(1);
           client.println("HTTP/1.1 200 OK");
-          //client.println("Content-type: text/json");
-          //client.println("Content-type: application/json");
           client.println("Content-Type: text/javascript");          
           client.println();
 

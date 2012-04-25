@@ -2,10 +2,10 @@
 Andrew Oke - andrew@practicalmaker.com
  */
 //debugging stuff. if you add serial.prints try and wrap them in #if DEBUG == 1 that way they can be turned off in production code
-#define DEBUG 0
+#define DEBUG 1
 #define DEBUGFREEMEMORY 0
-#define DEBUGETHERNETQUERYSTRING 0
-#define DEBUGETHERNETRETURNDATA 0
+#define DEBUGETHERNETQUERYSTRING 1
+#define DEBUGETHERNETRETURNDATA 1
 
 #define DIGITALPINSENABLED 1 //enable digitalRead and digitalWrite and analogWrite using the control functions
 #define ANALOGENABLED 1 //enable reading analog pins (doesn't need to be enabled to read pH)
@@ -51,9 +51,9 @@ Andrew Oke - andrew@practicalmaker.com
 //#include <tlc_progmem_utils.h>
 //#include <tlc_servos.h>
 //#include <tlc_shifts.h>
-#include <OneWire.h>
+//#include <OneWire.h>
 //#include <I2CLCD.h>
-#include <DS1307.h>
+//#include <DS1307.h>
 #include "variables.h"
 #include "freemem.h"
 #include "supportFunctions.h"

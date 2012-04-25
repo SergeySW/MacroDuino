@@ -321,6 +321,7 @@ int discoverOneWireDevices() {
 }
 #endif
 
+#if OneWire_h
 #if DS18B20ENABLED
 int getDS18B20Temp(int device_num) {
   OneWire ds(ONEWIRE_PIN);
@@ -378,6 +379,7 @@ int getDS18B20Temp(int device_num) {
 
   return Tc_100;
 }
+#endif
 #endif
 
 #if PHENABLED == 1
@@ -507,8 +509,10 @@ void runMacros() {
 #endif
       }
       else if(EEPROM.read(macro_mem_address_start + 1) == 4) {
+#if OneWire_h
 #if DS18B20ENABLED == 1
         runDS18B20Macro(macro_mem_address_start);
+#endif
 #endif
       }
     }
