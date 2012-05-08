@@ -1,12 +1,8 @@
 #define ARDUINO_MEM_ADDR 0
-
 #define BUFFERSIZE 80
 #define RETURNDATABUFFERSIZE 200
-
-
 //PH_GAIN = 4000mv / (59.2 * 7) where 4000mv is the max output of the BNC sensor shield circuit
 #define PH_GAIN 9.6525
-
 
 #if PCF8574AENABLED == 1
 const byte pcf8574a_addresses[] = {
@@ -82,3 +78,18 @@ const byte macros_bytes = 20;
 
 
 uint8_t degree_symbol = 0xDF;
+
+// REWRITE VARIABLES TO DEFINE
+
+#define IP_FIRST_OCTET 39
+#define IP_SECOND_OCTET 40
+#define IP_THIRD_OCTET 41
+#define IP_FOURTH_OCTET 42
+#define SUBNET_FIRST_OCTET 43
+#define SUBNET_SECOND_OCTET 44
+#define SUBNET_THIRD_OCTET 45
+#define SUBNET_FOURTH_OCTET 46
+#define GATEWAY_FIRST_OCTET 47
+#define GATEWAY_SECOND_OCTET 48
+#define GATEWAY_THIRD_OCTET 49
+#define GATEWAY_FOURTH_OCTET 50

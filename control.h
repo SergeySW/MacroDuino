@@ -309,6 +309,7 @@ char *control(char *commandString) {
 #endif
 
 #if PCF8574AENABLED == 1 
+#ifdef TwoWire_h
   if(commandToken == 6) {
     byte device = atoi(strtok(NULL, "/"));
     byte pin = atoi(strtok(NULL, "/"));
@@ -348,6 +349,7 @@ char *control(char *commandString) {
 
     return returnData;
   }   
+#endif
 #endif
 
 #if DIGITALPINSENABLED == 1
@@ -2253,9 +2255,452 @@ char *control(char *commandString) {
   #endif
 #endif
 
-  for(unsigned int i = 0; i <= BUFFERSIZE; i++) {
-    commandString[i] = '\0';
+//SET ARDUINO IP ADDRESS TO EEPROM
+#ifdef ethernet_h
+  if(commandToken == 35) {
+    byte ip_first = atoi(strtok(NULL, "/"));
+    byte ip_second = atoi(strtok(NULL, "/"));
+    byte ip_third = atoi(strtok(NULL, "/"));
+    byte ip_fourth = atoi(strtok(NULL, "/"));
+ 
+    EEPROM.write(IP_FIRST_OCTET, ip_first);
+    EEPROM.write(IP_SECOND_OCTET, ip_second);
+    EEPROM.write(IP_THIRD_OCTET, ip_third);
+    EEPROM.write(IP_FOURTH_OCTET, ip_fourth);    
+    
+    returnData[counter] = '{';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'S';
+    counter++;
+    returnData[counter] = 'E';
+    counter++;
+    returnData[counter] = 'T';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = ':';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'I';
+    counter++;
+    returnData[counter] = 'P';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = '}';
+    counter++;    
+    delay(1);
+
+    return returnData;
+  }    
+#endif
+
+//SET ARDUINO SUBNET ADDRESS TO EEPROM
+#ifdef ethernet_h
+  if(commandToken == 36) {
+    byte ip_first = atoi(strtok(NULL, "/"));
+    byte ip_second = atoi(strtok(NULL, "/"));
+    byte ip_third = atoi(strtok(NULL, "/"));
+    byte ip_fourth = atoi(strtok(NULL, "/"));
+ 
+    EEPROM.write(SUBNET_FIRST_OCTET, ip_first);
+    EEPROM.write(SUBNET_SECOND_OCTET, ip_second);
+    EEPROM.write(SUBNET_THIRD_OCTET, ip_third);
+    EEPROM.write(SUBNET_FOURTH_OCTET, ip_fourth);    
+    
+    returnData[counter] = '{';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'S';
+    counter++;
+    returnData[counter] = 'E';
+    counter++;
+    returnData[counter] = 'T';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = ':';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'S';
+    counter++;
+    returnData[counter] = 'U';
+    counter++;
+    returnData[counter] = 'B';
+    counter++;
+    returnData[counter] = 'N';
+    counter++;
+    returnData[counter] = 'E';
+    counter++;
+    returnData[counter] = 'T';
+    counter++;    
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = '}';
+    counter++;    
+    delay(1);
+
+    return returnData;
+  }    
+#endif
+
+//SET ARDUINO GATEWAY ADDRESS TO EEPROM
+#ifdef ethernet_h
+  if(commandToken == 37) {
+    byte ip_first = atoi(strtok(NULL, "/"));
+    byte ip_second = atoi(strtok(NULL, "/"));
+    byte ip_third = atoi(strtok(NULL, "/"));
+    byte ip_fourth = atoi(strtok(NULL, "/"));
+ 
+    EEPROM.write(GATEWAY_FIRST_OCTET, ip_first);
+    EEPROM.write(GATEWAY_SECOND_OCTET, ip_second);
+    EEPROM.write(GATEWAY_THIRD_OCTET, ip_third);
+    EEPROM.write(GATEWAY_FOURTH_OCTET, ip_fourth);    
+    
+    returnData[counter] = '{';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'S';
+    counter++;
+    returnData[counter] = 'E';
+    counter++;
+    returnData[counter] = 'T';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = ':';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'G';
+    counter++;
+    returnData[counter] = 'A';
+    counter++;
+    returnData[counter] = 'T';
+    counter++;
+    returnData[counter] = 'E';
+    counter++;
+    returnData[counter] = 'W';
+    counter++;
+    returnData[counter] = 'A';
+    counter++;    
+    returnData[counter] = 'Y';
+    counter++;        
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = '}';
+    counter++;    
+    delay(1);
+
+    return returnData;
+  }    
+#endif
+
+//PRINT ETHERNET CONFIG BACK
+#ifdef ethernet_h
+  if(commandToken == 38) {
+    counter = 0;
+
+    //DISPLAY ARDUINO IP
+    returnData[counter] = '{';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'I';
+    counter++;
+    returnData[counter] = 'P';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = ':';
+    counter++;
+    returnData[counter] = '"';
+    counter++;    
+    
+    memset(itoa_buffer, 0, sizeof itoa_buffer);
+    itoa(EEPROM.read(IP_FIRST_OCTET), itoa_buffer, 10);    
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++;
+
+    memset(itoa_buffer, 0, sizeof itoa_buffer);
+    itoa(EEPROM.read(IP_SECOND_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++; 
+ 
+    memset(itoa_buffer, 0, sizeof itoa_buffer); 
+    itoa(EEPROM.read(IP_THIRD_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++;     
+    
+    memset(itoa_buffer, 0, sizeof itoa_buffer);    
+    itoa(EEPROM.read(IP_FOURTH_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }    
+    
+    returnData[counter] = '"';
+    counter++;    
+    
+    //DISPLAY SUBNET INFO
+    returnData[counter] = ',';
+    counter++;     
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'S';
+    counter++;    
+    returnData[counter] = 'U';
+    counter++;    
+    returnData[counter] = 'B';
+    counter++;    
+    returnData[counter] = 'N';
+    counter++;    
+    returnData[counter] = 'E';
+    counter++;    
+    returnData[counter] = 'T';
+    counter++;    
+    returnData[counter] = '"';
+    counter++;     
+    returnData[counter] = ':';
+    counter++;        
+    returnData[counter] = '"';
+    counter++;     
+    
+    memset(itoa_buffer, 0, sizeof itoa_buffer);
+    itoa(EEPROM.read(SUBNET_FIRST_OCTET), itoa_buffer, 10);    
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++;
+
+    memset(itoa_buffer, 0, sizeof itoa_buffer);
+    itoa(EEPROM.read(SUBNET_SECOND_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++; 
+ 
+    memset(itoa_buffer, 0, sizeof itoa_buffer); 
+    itoa(EEPROM.read(SUBNET_THIRD_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++;     
+    
+    memset(itoa_buffer, 0, sizeof itoa_buffer);    
+    itoa(EEPROM.read(SUBNET_FOURTH_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }  
+  
+  
+   //DISPLAY GATEWAY INFO
+    returnData[counter] = ',';
+    counter++;     
+    returnData[counter] = '"';
+    counter++;    
+    returnData[counter] = 'G';
+    counter++;    
+    returnData[counter] = 'A';
+    counter++;    
+    returnData[counter] = 'T';
+    counter++;    
+    returnData[counter] = 'E';
+    counter++;    
+    returnData[counter] = 'W';
+    counter++;    
+    returnData[counter] = 'A';
+    counter++;    
+    returnData[counter] = 'Y';
+    counter++;        
+    returnData[counter] = '"';
+    counter++;     
+    returnData[counter] = ':';
+    counter++;        
+    returnData[counter] = '"';
+    counter++;     
+    
+    memset(itoa_buffer, 0, sizeof itoa_buffer);
+    itoa(EEPROM.read(GATEWAY_FIRST_OCTET), itoa_buffer, 10);    
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++;
+
+    memset(itoa_buffer, 0, sizeof itoa_buffer);
+    itoa(EEPROM.read(GATEWAY_SECOND_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++; 
+ 
+    memset(itoa_buffer, 0, sizeof itoa_buffer); 
+    itoa(EEPROM.read(GATEWAY_THIRD_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }
+    returnData[counter] = '.';
+    counter++;     
+    
+    memset(itoa_buffer, 0, sizeof itoa_buffer);    
+    itoa(EEPROM.read(GATEWAY_FOURTH_OCTET), itoa_buffer, 10);
+    
+    if(itoa_buffer[0] != NULL) {
+      returnData[counter] = itoa_buffer[0];
+      counter++;
+    }
+    if(itoa_buffer[1] != NULL) {
+      returnData[counter] = itoa_buffer[1];
+      counter++;
+    }
+    if(itoa_buffer[2] != NULL) {
+      returnData[counter] = itoa_buffer[2];
+      counter++;
+    }      
+    
+    returnData[counter] = '"';
+    counter++;       
+    
+    
+    returnData[counter] = '}';
+    counter++;
+    
+    delay(1);
+
+    return returnData;
   }
+#endif
+
+  memset(commandString, 0, sizeof commandString);
 }
 
 

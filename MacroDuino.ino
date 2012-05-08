@@ -7,12 +7,16 @@ Andrew Oke - andrew@practicalmaker.com
 #define DEBUGETHERNETQUERYSTRING 1
 #define DEBUGETHERNETRETURNDATA 1
 
-#define DIGITALPINSENABLED 1 //enable digitalRead and digitalWrite and analogWrite using the control functions
-#define ANALOGENABLED 1 //enable reading analog pins (doesn't need to be enabled to read pH)
-#define DS18B20ENABLED 1 //enable reading ds18b20 temp sensors
- 
-#define I2CLCDENABLED 1 //Not Defined in orginal code
-#define DS1307ENABLED 1 //Not Defined in orginal code
+//enable digitalRead and digitalWrite and analogWrite using the control functions
+#define DIGITALPINSENABLED 1 
+//enable reading analog pins (doesn't need to be enabled to read pH)
+#define ANALOGENABLED 1
+//enable reading ds18b20 temp sensors
+#define DS18B20ENABLED 1 
+//Not Defined in orginal code
+#define I2CLCDENABLED 1
+//Not Defined in orginal code
+#define DS1307ENABLED 1 
 
 #define PHENABLED 1 //enable ph readings
 #define ORPENABLED 1 //enable ORP readings
@@ -40,7 +44,7 @@ Andrew Oke - andrew@practicalmaker.com
 
 #include <Arduino.h> // needs to be enabled
 #include <EEPROM.h> // needs to be enabled
-#include <Wire.h>
+//#include <Wire.h>
 //#include <SD.h>
 #include <SPI.h>
 #include <Ethernet.h>
@@ -55,20 +59,20 @@ Andrew Oke - andrew@practicalmaker.com
 //#include <I2CLCD.h>
 //#include <DS1307.h>
 #include "variables.h"
-#include "freemem.h"
+//#include "freemem.h"
 #include "supportFunctions.h"
 #include "control.h"
 #include "ethernetInterface.h"
 #include "serialInterface.h"
-#include "LCDPrint.h"
-#include "pachubeFunctions.h"
+//#include "LCDPrint.h"
+//#include "pachubeFunctions.h"
 
 //change these ethernet settings to whatever fits your home network. No need to change mac
 #ifdef ethernet_h
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-byte ip[] = { 192, 168, 1, 177 };
-byte gateway[] = { 192, 168, 1, 1 };
-byte subnet[] = { 255, 255, 255, 0 };
+byte ip[] = { EEPROM.read(IP_FIRST_OCTET), EEPROM.read(IP_SECOND_OCTET), EEPROM.read(IP_THIRD_OCTET), EEPROM.read(IP_FOURTH_OCTET) };
+byte gateway[] = { EEPROM.read(GATEWAY_FIRST_OCTET), EEPROM.read(GATEWAY_SECOND_OCTET), EEPROM.read(GATEWAY_THIRD_OCTET), EEPROM.read(GATEWAY_FOURTH_OCTET) };
+byte subnet[] = { EEPROM.read(SUBNET_FIRST_OCTET), EEPROM.read(SUBNET_SECOND_OCTET), EEPROM.read(SUBNET_THIRD_OCTET), EEPROM.read(SUBNET_FOURTH_OCTET) };
 #endif
 
 #ifdef ethernet_h

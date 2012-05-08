@@ -146,7 +146,9 @@ void runDigitalMacro(unsigned int mem_address){
       } 
       else if(EEPROM.read(mem_address + 4) == 254) { //pcf8574
 #if PCF8574AENABLED == 1
+#ifdef TwoWire_h
         controlPCF8574A(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 7));
+#endif        
 #endif
       }
     }
@@ -167,7 +169,9 @@ void runAnalogMacro(unsigned int mem_address){
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
 #if PCF8574AENABLED == 1
+#ifdef TwoWire_h
           controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+#endif          
 #endif
         }
       }
@@ -184,7 +188,9 @@ void runAnalogMacro(unsigned int mem_address){
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
 #if PCF8574AENABLED == 1
+#ifdef TwoWire_h
           controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+#endif          
 #endif
         }
       }
@@ -201,7 +207,9 @@ void runAnalogMacro(unsigned int mem_address){
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
 #if PCF8574AENABLED == 1
+#ifdef TwoWire_h
           controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+#endif          
 #endif
         }
       }
