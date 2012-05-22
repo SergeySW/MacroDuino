@@ -142,14 +142,17 @@ void runDigitalMacro(unsigned int mem_address){
   if(digitalRead(EEPROM.read(mem_address + 2)) == EEPROM.read(mem_address + 3)) {
     if(EEPROM.read(mem_address + 5) <= 1) {
       if(EEPROM.read(mem_address + 4) <= 13) {  
-        digitalWrite(EEPROM.read(mem_address + 4), EEPROM.read(mem_address + 5));
-      } 
-      else if(EEPROM.read(mem_address + 4) == 254) { //pcf8574
-#if PCF8574AENABLED == 1
-#ifdef TwoWire_h
-        controlPCF8574A(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 7));
-#endif        
-#endif
+        if(EEPROM.read(mem_address + 5) <= 1) {
+          digitalWrite(EEPROM.read(mem_address + 4), EEPROM.read(mem_address + 5));
+        } else {
+          analogWrite(EEPROM.read(mem_address + 4), EEPROM.read(mem_address + 5));
+        }
+      } else if(EEPROM.read(mem_address + 4) == 254) { //pcf8574
+        #if PCF8574AENABLED == 1
+          #ifdef TwoWire_h
+            controlPCF8574A(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 7));
+          #endif        
+        #endif
       }
     }
     else{
