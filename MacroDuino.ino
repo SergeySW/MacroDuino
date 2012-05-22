@@ -15,8 +15,6 @@ Andrew Oke - andrew@practicalmaker.com
 #define DS18B20ENABLED 1 
 //Not Defined in orginal code
 #define I2CLCDENABLED 1
-//Not Defined in orginal code
-#define DS1307ENABLED 1 
 
 #define PHENABLED 1 //enable ph readings
 #define ORPENABLED 1 //enable ORP readings
@@ -44,7 +42,7 @@ Andrew Oke - andrew@practicalmaker.com
 
 #include <Arduino.h> // needs to be enabled
 #include <EEPROM.h> // needs to be enabled
-//#include <Wire.h>
+#include <Wire.h>
 //#include <SD.h>
 #include <SPI.h>
 #include <Ethernet.h>
@@ -57,15 +55,15 @@ Andrew Oke - andrew@practicalmaker.com
 //#include <tlc_shifts.h>
 //#include <OneWire.h>
 //#include <I2CLCD.h>
-//#include <DS1307.h>
+#include <DS1307.h>
 #include "variables.h"
-//#include "freemem.h"
+#include "freemem.h"
 #include "supportFunctions.h"
 #include "control.h"
 #include "ethernetInterface.h"
 #include "serialInterface.h"
 //#include "LCDPrint.h"
-//#include "pachubeFunctions.h"
+#include "pachubeFunctions.h"
 
 //change these ethernet settings to whatever fits your home network. No need to change mac
 #ifdef ethernet_h

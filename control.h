@@ -1172,7 +1172,7 @@ char *control(char *commandString) {
 #endif
 
 #ifdef I2CLCD_h
-#ifdef DS1307ENABLED
+#ifdef DS1307_h
   if(commandToken == 12){
     char *chardisplay_time_as_value = strtok(NULL, "/");
     int display_time_as_value = atoi(chardisplay_time_as_value);

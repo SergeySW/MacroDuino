@@ -13,7 +13,7 @@ void printToLCD() {
   int month = RTC.get(DS1307_MTH,false);
   int year = RTC.get(DS1307_YR,false);
 
-  #if DS1307ENABLED == 1 && I2CLCDENABLED == 1
+  #if DS1307_h && I2CLCDENABLED == 1
     if(EEPROM.read(i2clcd_time_display) == 1) {    
       if(EEPROM.read(display_time_as) == 0) {
         lcd.setCursor(EEPROM.read(i2clcd_cursor_col), EEPROM.read(i2clcd_cursor_row));

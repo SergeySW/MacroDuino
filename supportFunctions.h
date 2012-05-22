@@ -142,12 +142,9 @@ void runDigitalMacro(unsigned int mem_address){
   if(digitalRead(EEPROM.read(mem_address + 2)) == EEPROM.read(mem_address + 3)) {
     if(EEPROM.read(mem_address + 5) <= 1) {
       if(EEPROM.read(mem_address + 4) <= 13) {  
-        if(EEPROM.read(mem_address + 5) <= 1) {
-          digitalWrite(EEPROM.read(mem_address + 4), EEPROM.read(mem_address + 5));
-        } else {
-          analogWrite(EEPROM.read(mem_address + 4), EEPROM.read(mem_address + 5));
-        }
-      } else if(EEPROM.read(mem_address + 4) == 254) { //pcf8574
+        digitalWrite(EEPROM.read(mem_address + 4), EEPROM.read(mem_address + 5));
+      } 
+      else if(EEPROM.read(mem_address + 4) == 254) { //pcf8574
         #if PCF8574AENABLED == 1
           #ifdef TwoWire_h
             controlPCF8574A(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 7));
@@ -171,11 +168,11 @@ void runAnalogMacro(unsigned int mem_address){
           digitalWrite(EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 6));
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
-#if PCF8574AENABLED == 1
-#ifdef TwoWire_h
-          controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
-#endif          
-#endif
+          #if PCF8574AENABLED == 1
+            #ifdef TwoWire_h
+              controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+            #endif          
+          #endif
         }
       }
       else if(EEPROM.read(mem_address + 6) > 1) {
@@ -190,11 +187,11 @@ void runAnalogMacro(unsigned int mem_address){
           digitalWrite(EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 6));
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
-#if PCF8574AENABLED == 1
-#ifdef TwoWire_h
-          controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
-#endif          
-#endif
+          #if PCF8574AENABLED == 1
+            #ifdef TwoWire_h
+              controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+            #endif          
+          #endif
         }
       }
       else if(EEPROM.read(mem_address + 6) > 1) {
@@ -209,11 +206,11 @@ void runAnalogMacro(unsigned int mem_address){
           digitalWrite(EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 6));
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
-#if PCF8574AENABLED == 1
-#ifdef TwoWire_h
-          controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
-#endif          
-#endif
+          #if PCF8574AENABLED == 1
+            #ifdef TwoWire_h
+              controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+            #endif          
+          #endif
         }
       }
       else if(EEPROM.read(mem_address + 6) > 1) {
@@ -238,62 +235,60 @@ void DS1307SetTime(byte hour, byte minute, byte second, byte day, byte dow, byte
 }
 #endif
 
+
+//TODO
+// add in support for on state and off state
 #ifdef DS1307_h
 void runDS1307Macro(unsigned int mem_address){
-  unsigned int time_start;
-  unsigned int time_stop;
-  unsigned int rtc_time;		
+  long time_start;
+  long time_stop;
+  long rtc_time;		
 
-  rtc_time = (RTC.get(DS1307_HR,true) * 60) + RTC.get(DS1307_MIN,true);
-  time_start = (EEPROM.read(mem_address + 2) * 60) + EEPROM.read(mem_address + 3);
-  time_stop = (EEPROM.read(mem_address + 4) * 60) + EEPROM.read(mem_address + 5);
+  rtc_time = (RTC.get(DS1307_HR,true) * 60 * 60) + (RTC.get(DS1307_MIN,true) * 60);
+  time_start = (EEPROM.read(mem_address + 2) * 60 * 60) + (EEPROM.read(mem_address + 3) * 60);
+  time_stop = (EEPROM.read(mem_address + 4) * 60 * 60) + (EEPROM.read(mem_address + 5) * 60);
 
   if(RTC.get(DS1307_DOW, false) == EEPROM.read(mem_address + 6) || EEPROM.read(mem_address + 6) == 0) {	
     if(rtc_time >= time_start && rtc_time <= time_stop) {
       if(EEPROM.read(mem_address + 8) <= 1) {
         if(EEPROM.read(mem_address + 7) <= 13) {
           digitalWrite(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 8));
-        } 
-        else if(EEPROM.read(mem_address + 7) == 254) { //pcf8574
-#if PCF8574AENABLED == 1
-          controlPCF8574A(EEPROM.read(mem_address + 10), EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 11));
-#endif
+        } else if(EEPROM.read(mem_address + 7) == 254) { //pcf8574
+          #if PCF8574AENABLED == 1
+            controlPCF8574A(EEPROM.read(mem_address + 10), EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 11));
+          #endif
         }
-      } 
-      else {
+      } else {
         if(rtc_time < (time_start + EEPROM.read(mem_address + 9))) { //fade in
           if(EEPROM.read(mem_address + 7) <= 13) {
             int pwm_value = (rtc_time - time_start) * (EEPROM.read(mem_address + 8) / EEPROM.read(mem_address + 9));
-#if DEBUG == 1
-            Serial.print("PWM Fade In: ");
-            Serial.println(pwm_value);
-#endif
+            #if DEBUG == 1
+              Serial.print("PWM Fade In: ");
+              Serial.println(pwm_value);
+            #endif
             analogWrite(EEPROM.read(mem_address + 7), pwm_value);
           }
-        }
-        else if(rtc_time > (time_stop - EEPROM.read(mem_address + 9))) { //fade out
+        } else if(rtc_time > (time_stop - EEPROM.read(mem_address + 9))) { //fade out
           int pwm_value = (time_stop - rtc_time) * (EEPROM.read(mem_address + 8) / EEPROM.read(mem_address + 9));
-#if DEBUG == 1
-          Serial.print("PWM Fade Out: ");        
-          Serial.println(pwm_value);
-#endif        
+          #if DEBUG == 1
+            Serial.print("PWM Fade Out: ");        
+            Serial.println(pwm_value);
+          #endif        
           analogWrite(EEPROM.read(mem_address + 7), pwm_value);
-        } 
-        else {
-#if DEBUG == 1
-          Serial.print("PWM On at: ");
-          Serial.println(EEPROM.read(mem_address + 8));
-#endif
+        } else {
+          #if DEBUG == 1
+            Serial.print("PWM On at: ");
+            Serial.println(EEPROM.read(mem_address + 8));
+          #endif
           analogWrite(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 8));
         }
 
       }
-    }
-    else if(rtc_time > time_stop) {
+    } else if(rtc_time > time_stop) {
       digitalWrite(EEPROM.read(mem_address + 7), 0);
-#if PCF8574AENABLED == 1
-      controlPCF8574A(EEPROM.read(mem_address + 10), 0, EEPROM.read(mem_address + 11));    
-#endif
+      #if PCF8574AENABLED == 1
+        controlPCF8574A(EEPROM.read(mem_address + 10), 0, EEPROM.read(mem_address + 11));    
+      #endif
     }
   }
 }
