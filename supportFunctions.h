@@ -21,14 +21,14 @@ void resetMacros(){
   }
 }
 
-#if DIGITALPINSENABLED == 1
+#ifdef DIGITALPINSENABLED
 void pinModeSet(byte pin, byte mode){
   EEPROM.write(pin, mode);
   pinMode(pin, mode);
 }
 #endif
 
-#if DIGITALPINSENABLED == 1
+#ifdef DIGITALPINSENABLED
 void setPinStatus(byte pin, byte Status) {
   if(Status <= 1) {
     digitalWrite(pin, Status);
@@ -39,8 +39,7 @@ void setPinStatus(byte pin, byte Status) {
 }
 #endif
 
-#if PCF8574AENABLED == 1
-#ifdef TwoWire_h
+#ifdef PCF8574AENABLED && TwoWire_h
 void controlPCF8574A(byte device, byte pin_status, byte pin) {
   if(pin_status == 0) {
     pcf8574a_states[device] |= (1 << pin);
@@ -56,12 +55,10 @@ void controlPCF8574A(byte device, byte pin_status, byte pin) {
   }
 }
 #endif
-#endif
 
 //TODO - intelligently handle numbers > 255 and store them.
-#if MACROSENABLED == 1
-void macroSet(char *macro_name,  int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, int arg10){
-  int arg11;
+#ifdef MACROSENABLED
+void macroSet(char *macro_name,  int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, int arg10, int arg11){
   int arg12;
   int arg13;
   int arg14;
@@ -137,7 +134,7 @@ void macroSet(char *macro_name,  int arg1, int arg2, int arg3, int arg4, int arg
 }
 #endif
 
-#if DIGITALPINSENABLED == 1
+#ifdef DIGITALPINSENABLED
 void runDigitalMacro(unsigned int mem_address){
   if(digitalRead(EEPROM.read(mem_address + 2)) == EEPROM.read(mem_address + 3)) {
     if(EEPROM.read(mem_address + 5) <= 1) {
@@ -145,11 +142,9 @@ void runDigitalMacro(unsigned int mem_address){
         digitalWrite(EEPROM.read(mem_address + 4), EEPROM.read(mem_address + 5));
       } 
       else if(EEPROM.read(mem_address + 4) == 254) { //pcf8574
-        #if PCF8574AENABLED == 1
-          #ifdef TwoWire_h
-            controlPCF8574A(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 7));
-          #endif        
-        #endif
+        #ifdef PCF8574AENABLED && TwoWire_h
+          controlPCF8574A(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 7));
+        #endif        
       }
     }
     else{
@@ -159,7 +154,7 @@ void runDigitalMacro(unsigned int mem_address){
 }
 #endif
 
-#if ANALOGENABLED == 1
+#ifdef ANALOGENABLED
 void runAnalogMacro(unsigned int mem_address){
   if(EEPROM.read(mem_address + 4) == 1) {
     if(analogRead(EEPROM.read(mem_address + 2)) < combineValue(EEPROM.read(mem_address + 3), EEPROM.read(mem_address + 14))) {
@@ -168,11 +163,9 @@ void runAnalogMacro(unsigned int mem_address){
           digitalWrite(EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 6));
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
-          #if PCF8574AENABLED == 1
-            #ifdef TwoWire_h
-              controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
-            #endif          
-          #endif
+          #ifdef PCF8574AENABLED && TwoWire_h
+            controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+          #endif          
         }
       }
       else if(EEPROM.read(mem_address + 6) > 1) {
@@ -187,11 +180,9 @@ void runAnalogMacro(unsigned int mem_address){
           digitalWrite(EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 6));
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
-          #if PCF8574AENABLED == 1
-            #ifdef TwoWire_h
-              controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
-            #endif          
-          #endif
+          #ifdef PCF8574AENABLED && TwoWire_h
+            controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+          #endif          
         }
       }
       else if(EEPROM.read(mem_address + 6) > 1) {
@@ -206,11 +197,9 @@ void runAnalogMacro(unsigned int mem_address){
           digitalWrite(EEPROM.read(mem_address + 5), EEPROM.read(mem_address + 6));
         }
         else if(EEPROM.read(mem_address + 5) == 254) { //pcf8574
-          #if PCF8574AENABLED == 1
-            #ifdef TwoWire_h
-              controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
-            #endif          
-          #endif
+          #ifdef PCF8574AENABLED && TwoWire_h
+            controlPCF8574A(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 8));
+          #endif          
         }
       }
       else if(EEPROM.read(mem_address + 6) > 1) {
@@ -254,7 +243,7 @@ void runDS1307Macro(unsigned int mem_address){
         if(EEPROM.read(mem_address + 7) <= 13) {
           digitalWrite(EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 8));
         } else if(EEPROM.read(mem_address + 7) == 254) { //pcf8574
-          #if PCF8574AENABLED == 1
+          #ifdef PCF8574AENABLED
             controlPCF8574A(EEPROM.read(mem_address + 10), EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 11));
           #endif
         }
@@ -286,7 +275,7 @@ void runDS1307Macro(unsigned int mem_address){
       }
     } else if(rtc_time > time_stop) {
       digitalWrite(EEPROM.read(mem_address + 7), 0);
-      #if PCF8574AENABLED == 1
+      #ifdef PCF8574AENABLED
         controlPCF8574A(EEPROM.read(mem_address + 10), 0, EEPROM.read(mem_address + 11));    
       #endif
     }
@@ -327,8 +316,7 @@ int discoverOneWireDevices() {
 }
 #endif
 
-#if OneWire_h
-#if DS18B20ENABLED
+#ifdef OneWire_h && DS18B20ENABLED
 int getDS18B20Temp(int device_num) {
   OneWire ds(ONEWIRE_PIN);
 
@@ -386,9 +374,8 @@ int getDS18B20Temp(int device_num) {
   return Tc_100;
 }
 #endif
-#endif
 
-#if PHENABLED == 1
+#ifdef PHENABLED
 float getPHValue(unsigned int pin) {
   int analogreadings;
   unsigned int millivolts;
@@ -411,7 +398,7 @@ float getPHValue(unsigned int pin) {
 }
 #endif
 
-#if ORPENABLED == 1
+#ifdef ORPENABLED
 int getORPValue(unsigned int pin) {
   int analogreadings;
   int millivolts;
@@ -430,8 +417,7 @@ int getORPValue(unsigned int pin) {
 }
 #endif
 
-#ifdef OneWire_h
-#ifdef EEPROM_h
+#ifdef OneWire_h && EEPROM_h 
 void runDS18B20Macro(int mem_address) {
   int temp;
 
@@ -444,7 +430,9 @@ void runDS18B20Macro(int mem_address) {
           digitalWrite(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 7));
         }
         else if(EEPROM.read(mem_address + 6) == 254) { //pcf8574
-          controlPCF8574A(EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 9));
+          #ifdef PCF8574AENABLED && TwoWire_h
+            controlPCF8574A(EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 9));
+          #endif
         }
       } 
       else {
@@ -459,7 +447,9 @@ void runDS18B20Macro(int mem_address) {
           digitalWrite(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 7));
         }
         else if(EEPROM.read(mem_address + 6) == 254) { //pcf8574
-          controlPCF8574A(EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 9));
+          #ifdef PCF8574AENABLED && TwoWire_h
+            controlPCF8574A(EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 9));
+          #endif
         }
       } 
       else {
@@ -474,7 +464,9 @@ void runDS18B20Macro(int mem_address) {
           digitalWrite(EEPROM.read(mem_address + 6), EEPROM.read(mem_address + 7));
         }
         else if(EEPROM.read(mem_address + 6) == 254) { //pcf8574
-          controlPCF8574A(EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 9));
+          #ifdef PCF8574AENABLED && TwoWire_h
+            controlPCF8574A(EEPROM.read(mem_address + 8), EEPROM.read(mem_address + 7), EEPROM.read(mem_address + 9));
+          #endif
         }
       } 
       else {
@@ -484,7 +476,6 @@ void runDS18B20Macro(int mem_address) {
   }
 }
 #endif  
-#endif
 
 #ifdef TLC5940_H
 void controlTLC5940(int tlc_pin_num, int tlc_action) {
@@ -500,14 +491,14 @@ void runMacros() {
     macro_mem_address_start = macros_memstart + (i * macros_bytes);
     if(EEPROM.read(macro_mem_address_start) == 1) {    
       if(EEPROM.read(macro_mem_address_start + 1) == 1) {
-#if DIGITALPINSENABLED == 1
-        runDigitalMacro(macro_mem_address_start);
-#endif
+        #ifdef DIGITALPINSENABLED
+          runDigitalMacro(macro_mem_address_start);
+        #endif
       }
       else if(EEPROM.read(macro_mem_address_start + 1) == 2) {
-#if ANALOGENABLED == 1
-        runAnalogMacro(macro_mem_address_start);
-#endif
+        #ifdef ANALOGENABLED
+          runAnalogMacro(macro_mem_address_start);
+        #endif  
       }
       else if(EEPROM.read(macro_mem_address_start + 1) == 3) {
 #ifdef DS1307_h
@@ -515,11 +506,9 @@ void runMacros() {
 #endif
       }
       else if(EEPROM.read(macro_mem_address_start + 1) == 4) {
-#if OneWire_h
-#if DS18B20ENABLED == 1
-        runDS18B20Macro(macro_mem_address_start);
-#endif
-#endif
+        #ifdef OneWire_h && DS18B20ENABLED
+          runDS18B20Macro(macro_mem_address_start);
+        #endif
       }
     }
   }

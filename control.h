@@ -430,7 +430,7 @@ char *control(char *commandString) {
     return returnData;
   }	
 
-#if DIGITALPINSENABLED == 1
+#ifdef DIGITALPINSENABLED
   if(commandToken == 3) {
     char *charpin = strtok(NULL, "/");
     char *charmode = strtok(NULL, "/");
@@ -483,7 +483,7 @@ char *control(char *commandString) {
   }
 #endif
 
-#if DIGITALPINSENABLED == 1
+#ifdef DIGITALPINSENABLED
   if(commandToken == 4) {
     char *charpin = strtok(NULL, "/");
     char *charpinstatus = strtok(NULL, "/");
@@ -552,7 +552,7 @@ char *control(char *commandString) {
   }
 #endif
 
-#if MACROSENABLED == 1
+#ifdef MACROSENABLED
   if(commandToken == 5) {
     char *macro_name = strtok(NULL, "/");
     int arg1 = atoi(strtok(NULL, "/"));
@@ -564,9 +564,10 @@ char *control(char *commandString) {
     int arg7 = atoi(strtok(NULL, "/"));
     int arg8 = atoi(strtok(NULL, "/"));
     int arg9 = atoi(strtok(NULL, "/"));
-    int arg10 = atoi(strtok(NULL, "/"));     
+    int arg10 = atoi(strtok(NULL, "/"));
+    int arg11 = atoi(strtok(NULL, "/"));   
 
-    macroSet(macro_name, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+    macroSet(macro_name, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
 
     counter = 0;
 
@@ -596,8 +597,7 @@ char *control(char *commandString) {
   }
 #endif
 
-#if PCF8574AENABLED == 1 
-#ifdef TwoWire_h
+#ifdef PCF8574AENABLED && TwoWire_h
   if(commandToken == 6) {
     byte device = atoi(strtok(NULL, "/"));
     byte pin = atoi(strtok(NULL, "/"));
@@ -609,6 +609,8 @@ char *control(char *commandString) {
 
     counter = 0;
 
+    returnData[counter] = '{';
+    counter++;  
     returnData[counter] = '"';
     counter++;
     returnData[counter] = 'S';
@@ -633,22 +635,32 @@ char *control(char *commandString) {
     counter++;          
     returnData[counter] = '"';
     counter++;          
+    returnData[counter] = ':';
+    counter++;  
+    returnData[counter] = '"';
+    counter++;  
+    returnData[counter] = 'Y';
+    counter++;      
+    returnData[counter] = '"';
+    counter++;          
+    returnData[counter] = '}';
+    counter++;      
     delay(1);
 
     return returnData;
   }   
 #endif
-#endif
 
-#if DIGITALPINSENABLED == 1
+#ifdef DIGITALPINSENABLED
   //TODO - not returning an address and won't return correct pin for values over 9
   if(commandToken == 7){
-    char *charwatch_pin = strtok(NULL, "/");
-    byte watch_pin = atoi(charwatch_pin);
+    char *char_watch_pin = strtok(NULL, "/");
+    byte watch_pin = atoi(char_watch_pin);
 
     itoa(digitalRead(watch_pin), itoa_buffer, 10);
 
     counter = 0;
+    check = false;
 
     returnData[counter] = '{';   
     counter++;
@@ -660,8 +672,17 @@ char *control(char *commandString) {
     counter++;
     returnData[counter] = ':';
     counter++;
-    returnData[counter] = *charwatch_pin;
-    counter++;
+    if(char_watch_pin[0] != NULL) {
+      returnData[counter] = char_watch_pin[0];
+      counter++;
+    }
+    if(char_watch_pin[1] != NULL) {
+      returnData[counter] = char_watch_pin[1];
+      counter++;
+    } 
+    else {
+      check = true;
+    }
     returnData[counter] = ',';
     counter++;
     returnData[counter] = 'V';
@@ -687,7 +708,7 @@ char *control(char *commandString) {
 #endif		
 
 
-#if ANALOGENABLED == 1
+#ifdef ANALOGENABLED
   if(commandToken == 8){
     char *charwatch_pin = strtok(NULL, "/");
     int watch_pin = atoi(charwatch_pin);
@@ -1125,6 +1146,7 @@ char *control(char *commandString) {
   }
 #endif
 
+//TODO
 #ifdef TLC5940_H
   if(commandToken == 11) {
     int tlc_pin_num = atoi(strtok(NULL, "/"));
@@ -1171,8 +1193,8 @@ char *control(char *commandString) {
   }
 #endif
 
-#ifdef I2CLCD_h
-#ifdef DS1307_h
+//TODO
+#ifdef I2CLCD_h && DS1307_h
   if(commandToken == 12){
     char *chardisplay_time_as_value = strtok(NULL, "/");
     int display_time_as_value = atoi(chardisplay_time_as_value);
@@ -1242,7 +1264,6 @@ char *control(char *commandString) {
     return returnData;       
   }
 #endif
-#endif
 
 #ifdef OneWire_h
   if(commandToken == 13){		
@@ -1274,7 +1295,8 @@ char *control(char *commandString) {
     counter++;
     returnData[counter] = '}';
     counter++;
-
+    delay(1);
+    
     return returnData;
   }
 #endif
@@ -1352,8 +1374,7 @@ char *control(char *commandString) {
   }
 #endif 
 
-#if OneWire_h
-#if DS18B20ENABLED == 1
+#ifdef OneWire_h && DS18B20ENABLED
   if(commandToken == 15){
     char *chartemp_sensor_num = strtok(NULL, "/");
     int temp_sensor_num = atoi(chartemp_sensor_num);
@@ -1447,12 +1468,11 @@ char *control(char *commandString) {
     }
     returnData[counter] = '}';
     counter++;
+    delay(1);
 
-    Serial.println(returnData);
     return returnData;		
   }
 #endif 
-#endif
 
 #ifdef I2CLCD_h
 #ifdef DS1307_h
@@ -1577,8 +1597,7 @@ char *control(char *commandString) {
 #endif
 #endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 18){
     char *char_row = strtok(NULL, "/");
     char *char_col = strtok(NULL, "/");
@@ -1646,10 +1665,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif
-#endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h   	
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 19){
     char *char_sensor_num = strtok(NULL, "/");
     byte sensor_num = atoi(char_sensor_num);
@@ -1699,10 +1716,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif     
-#endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h   
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 20){
     char *char_display_temp = strtok(NULL, "/");
     bool display_temp = atoi(char_display_temp);
@@ -1758,10 +1773,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif
-#endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h   
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 21){
     char *char_row = strtok(NULL, "/");
     char *char_col = strtok(NULL, "/");
@@ -1829,10 +1842,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif     
-#endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h   	
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 22){
     char *char_sensor_num = strtok(NULL, "/");
     byte sensor_num = atoi(char_sensor_num);
@@ -1882,10 +1893,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif     
-#endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h   
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 23){
     char *char_display_temp = strtok(NULL, "/");
     bool display_temp = atoi(char_display_temp);
@@ -1941,10 +1950,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif
-#endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h   
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 24){
     char *char_row = strtok(NULL, "/");
     char *char_col = strtok(NULL, "/");
@@ -2012,10 +2019,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif
-#endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h   	
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 25){
     char *char_sensor_num = strtok(NULL, "/");
     byte sensor_num = atoi(char_sensor_num);
@@ -2065,10 +2070,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif
-#endif
 
-#if DS18B20ENABLED == 1
-#ifdef I2CLCD_h   
+#ifdef I2CLCD_h && DS18B20ENABLED
   if(commandToken == 26){
     char *char_display_temp = strtok(NULL, "/");
     bool display_temp = atoi(char_display_temp);
@@ -2124,9 +2127,8 @@ char *control(char *commandString) {
     return returnData;
   }
 #endif
-#endif
 
-#if PHENABLED == 1
+#ifdef PHENABLED
   if(commandToken == 28){
     char *char_watch_pin = strtok(NULL, "/");
     int watch_pin = atoi(char_watch_pin);
@@ -2140,8 +2142,7 @@ char *control(char *commandString) {
   }
 #endif
 
-#if PHENABLED == 1
-#ifdef I2CLCD_h
+#ifdef I2CLCD_h && PHENABLED
   if(commandToken == 29){
     char *char_row = strtok(NULL, "/");
     char *char_col = strtok(NULL, "/");
@@ -2208,11 +2209,9 @@ char *control(char *commandString) {
 
     return returnData;
   }
-  #endif
 #endif
 
-#if PHENABLED == 1
-   #ifdef I2CLCD_h
+#ifdef I2CLCD_h && PHENABLED
   if(commandToken == 30){
     char *char_display_ph = strtok(NULL, "/");
     int display_ph_value = atoi(char_display_ph);
@@ -2261,10 +2260,9 @@ char *control(char *commandString) {
 
     return returnData;
   }
-  #endif
 #endif
 
-#if MACROSENABLED == 1
+#ifdef MACROSENABLED
   if(commandToken == 31) {
     char *char_macro_number = strtok(NULL, "/");
     int macro_number = atoi(char_macro_number);
@@ -2305,6 +2303,22 @@ char *control(char *commandString) {
       int counter = 0;
       boolean check_macro_number = false;
       int address_start = macros_memstart + (macros_bytes * macro_number);
+      returnData[counter] = '{';
+      counter++;
+      returnData[counter] = '"';
+      counter++;
+      returnData[counter] = 'R';
+      counter++;
+      returnData[counter] = 'U';
+      counter++;
+      returnData[counter] = 'L';
+      counter++;
+      returnData[counter] = 'E';
+      counter++;
+      returnData[counter] = '"';
+      counter++;      
+      returnData[counter] = ':';
+      counter++;      
       returnData[counter] = '"';
       counter++;
       if(char_macro_number[0] != NULL) {
@@ -2369,6 +2383,8 @@ char *control(char *commandString) {
       }
       returnData[counter] = '"';
       counter++;      
+      returnData[counter] = '}';
+      counter++;      
     }  
     delay(1);
 
@@ -2376,7 +2392,7 @@ char *control(char *commandString) {
   }
 #endif
 
-#if MACROSENABLED == 1
+#ifdef MACROSENABLED
   if(commandToken == 32) {
     char *char_macro_number = strtok(NULL, "/");
     int macro_number = atoi(char_macro_number);
@@ -2419,8 +2435,7 @@ char *control(char *commandString) {
   }  
 #endif
 
-#if PHENABLED == 1
-#ifdef I2CLCD_h
+#ifdef I2CLCD_h && PHENABLED
   if(commandToken == 33){
     char *char_row = strtok(NULL, "/");
     char *char_col = strtok(NULL, "/");
@@ -2487,11 +2502,9 @@ char *control(char *commandString) {
 
     return returnData;
   }
-  #endif
 #endif
 
-#if PHENABLED == 1
-   #ifdef I2CLCD_h
+#ifdef I2CLCD_h && PHENABLED
   if(commandToken == 34){
     char *char_display_ph = strtok(NULL, "/");
     int display_ORP_value = atoi(char_display_ph);
@@ -2540,7 +2553,6 @@ char *control(char *commandString) {
 
     return returnData;
   }
-  #endif
 #endif
 
 //SET ARDUINO IP ADDRESS TO EEPROM

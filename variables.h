@@ -1,10 +1,10 @@
 #define ARDUINO_MEM_ADDR 0
 #define BUFFERSIZE 80
-#define RETURNDATABUFFERSIZE 200
+#define RETURNDATABUFFERSIZE 280
 //PH_GAIN = 4000mv / (59.2 * 7) where 4000mv is the max output of the BNC sensor shield circuit
 #define PH_GAIN 9.6525
 
-#if PCF8574AENABLED == 1
+#ifdef PCF8574AENABLED
 const byte pcf8574a_addresses[] = {
     B0111000,
     B0111001,
@@ -65,21 +65,17 @@ extern const int macros_memstart = 111;
 const int macros_memend = 511;
 const byte macros_bytes = 20;
 
-#if SENDTOPACHUBEENABLED == 1
-  unsigned long pachube_last_connect;
-  unsigned int pachube_successes = 0;
-  unsigned int pachube_failures = 0;  
-  boolean pachube_request_pause = false;
-  boolean pachube_ready_to_update = true;
-  unsigned int pachube_interval;  
-  // to configure what data you send to pachube look in pachubeFunctions.h
+#ifdef SENDTOCOSMENABLED
+  unsigned long COSM_LAST_UPDATE;
 #endif
 
 
-
+// REWRITE VARIABLES TO DEFINE
 uint8_t degree_symbol = 0xDF;
 
-// REWRITE VARIABLES TO DEFINE
+unsigned long currentMillis = millis();
+unsigned long previousMillis = 0;
+
 
 #define IP_FIRST_OCTET 39
 #define IP_SECOND_OCTET 40
@@ -93,3 +89,9 @@ uint8_t degree_symbol = 0xDF;
 #define GATEWAY_SECOND_OCTET 48
 #define GATEWAY_THIRD_OCTET 49
 #define GATEWAY_FOURTH_OCTET 50
+
+#ifdef ethernet_h
+byte ip[] = { EEPROM.read(IP_FIRST_OCTET), EEPROM.read(IP_SECOND_OCTET), EEPROM.read(IP_THIRD_OCTET), EEPROM.read(IP_FOURTH_OCTET) };
+byte gateway[] = { EEPROM.read(GATEWAY_FIRST_OCTET), EEPROM.read(GATEWAY_SECOND_OCTET), EEPROM.read(GATEWAY_THIRD_OCTET), EEPROM.read(GATEWAY_FOURTH_OCTET) };
+byte subnet[] = { EEPROM.read(SUBNET_FIRST_OCTET), EEPROM.read(SUBNET_SECOND_OCTET), EEPROM.read(SUBNET_THIRD_OCTET), EEPROM.read(SUBNET_FOURTH_OCTET) };
+#endif

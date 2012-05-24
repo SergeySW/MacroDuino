@@ -74,7 +74,7 @@ void printToLCD() {
     }
   #endif
 	
-  #if DS18B20ENABLED == 1 && I2CLCDENABLED == 1
+  #ifdef DS18B20ENABLED && I2CLCD_h
     if(EEPROM.read(display_ds18b20_temp1) == 1) {
       lcd.setCursor(EEPROM.read(ds18b20_temp1_col), EEPROM.read(ds18b20_temp1_row));
       temp = getDS18B20Temp(EEPROM.read(ds18b20_temp1_sensor));
@@ -130,7 +130,7 @@ void printToLCD() {
     }
   #endif
 
-  #if PHENABLED && I2CLCDENABLED == 1
+  #ifdef PHENABLED && I2CLCD_h
     if(EEPROM.read(display_ph) == 1) {
       lcd.setCursor(EEPROM.read(display_ph_col), EEPROM.read(display_ph_row));
       lcd.write("PH:");
