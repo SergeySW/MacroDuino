@@ -10,7 +10,7 @@ BEGIN ENABLE VARIABLES. UNCOMMENT TO ENABLE, COMMENT TO DISABLE
 //#define DEBUGETHERNETQUERYSTRING
 //#define DEBUGETHERNETRETURNDATA
 
-//#define SERIALON  // if uncommented also uncomment #include "control.h" AND #include "serialInterface.h"
+#define SERIALON  // if uncommented also uncomment #include "control.h" AND #include "serialInterface.h"
 //uncomment to enable things like digitalRead, digitalWrite and analogWrite
 #define DIGITALPINSENABLED
 //uncomment to enable analogRead
@@ -18,15 +18,15 @@ BEGIN ENABLE VARIABLES. UNCOMMENT TO ENABLE, COMMENT TO DISABLE
 //uncomment to use ds18b20 sensorsz
 #define DS18B20ENABLED  // if uncommented also uncomment #include <O
 //uncomment to enable pH readings
-//#define PHENABLED
+#define PHENABLED
 //uncomment to enable ORP readings
-//#define ORPENABLED
+#define ORPENABLED
 //uncomment to enable pcf8574a
-//#define PCF8574AENABLED
+#define PCF8574AENABLED
 //uncomment if you want to enable macros
 #define MACROSENABLED
 //uncomment to enable sending data to COSM
-#define SENDTOCOSMENABLED
+//#define SENDTOCOSMENABLED
 //uncomment to have readings in celsius
 //#define CELSIUS
 //uncomment to use 1wire parasitic power mode
@@ -44,7 +44,7 @@ BELOW ARE VARIABLES YOU CAN CHANGE
 #define ONEWIRE_PIN 2
 
 #ifdef SENDTOCOSMENABLED
-#define COSM_APIKEY "vcf_fhpSxppFkT7u3kK50pDVPMiSAKxPV2RIQkZBSStRND0g" // fill in your API key
+#define COSM_APIKEY "" // fill in your API key
 #define COSM_FEED_ID 60964     // this is your Pachube feed ID that you want to share to
 #define COSM_UPDATE_INTERVAL 60000    // if the connection is good wait 30 seconds before updating again - should not be less than 5
 #endif
@@ -74,7 +74,7 @@ ie. If you uncomment DS18B20ENABLED but don't uncomment #include <OneWire.h> it 
 //#include <tlc_shifts.h>
 #include <OneWire.h>
 //#include <I2CLCD.h>
-//#include <DS1307.h>
+#include <DS1307.h>
 #include <Cosm.h>
 #include "variables.h" // needs to be enabled
 //#include "freemem.h"

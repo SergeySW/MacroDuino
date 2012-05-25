@@ -8,11 +8,11 @@ void sendCosmData(){
   client.updateFeed(COSM_FEED_ID, dataStreamName, sensorReading);
   
   available functions:
-  (double)analogRead(pin#);
+  analogRead(pin#);
   digitalRead(pin#);
   (double)(getDS18B20Temp(device_num)/100)    note that in MacroDuino ds18b20 devices get assigned by device number. 0-4 are valid values. remember to run command discover 1wire devices
-  getPHValue(pin#)
-  getORPValue(pin#)
+  (double)getPHValue(pin#)
+  (double)getORPValue(pin#)
   */
   
   client.connectViaGateway(mac, ip, gateway, gateway, subnet);  
