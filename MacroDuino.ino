@@ -1,20 +1,22 @@
 /*
 Andrew Oke - andrew@practicalmaker.com
  */
+/*
+BEGIN ENABLE VARIABLES. UNCOMMENT TO ENABLE, COMMENT TO DISABLE
+*/
+//debugging stuff. if you add serial.prints try and wrap them in #ifdef DEBUG ... #endif that way they can be turned off in production code
+//#define DEBUG
+//#define DEBUGFREEMEMORY
+//#define DEBUGETHERNETQUERYSTRING
+//#define DEBUGETHERNETRETURNDATA
 
-//debugging stuff. if you add serial.prints try and wrap them in #if DEBUG == 1 that way they can be turned off in production code
-#define DEBUG 0
-#define DEBUGFREEMEMORY 0
-#define DEBUGETHERNETQUERYSTRING 0
-#define DEBUGETHERNETRETURNDATA 0
-
-//#define SERIALON
+#define SERIALON  // if uncommented also uncomment #include "control.h" AND #include "serialInterface.h"
 //uncomment to enable things like digitalRead, digitalWrite and analogWrite
 #define DIGITALPINSENABLED
 //uncomment to enable analogRead
 #define ANALOGENABLED
-//uncomment to use ds18b20 sensors
-#define DS18B20ENABLED
+//uncomment to use ds18b20 sensorsz
+#define DS18B20ENABLED  // if uncommented also uncomment #include <O
 //uncomment to enable pH readings
 //#define PHENABLED
 //uncomment to enable ORP readings
@@ -23,17 +25,23 @@ Andrew Oke - andrew@practicalmaker.com
 #define PCF8574AENABLED
 //uncomment if you want to enable macros
 #define MACROSENABLED
-
-#define CELSIUS 0 //change celsius to 1 to change readings to celsius
 //uncomment to enable sending data to COSM
-#define SENDTOCOSMENABLED
-#define ONEWIRE_PIN 2 //which pin to connect the onewire pin to.
-#define ARDUINO_VOLTAGE 4.484 //to ensure better pH readings take a measurement of the voltage on your arduino and put that in here.
-#define PH_PIN 2 //which analog pin to use for measuring ph that displayed on the LCD display.
+//#define SENDTOCOSMENABLED
+//uncomment to have readings in celsius
+//#define CELSIUS
+//uncomment to use 1wire parasitic power mode
+//#define ONEWIRE_PARASITIC_POWER_MODE
+/*
+END ENABLE VARIABLES
+*/
 
-#define ORP_PIN 3 // New Addition, show ORP on screen. 
+/*
+BELOW ARE VARIABLES YOU CAN CHANGE
+*/
+//to ensure better pH readings take a measurement of the voltage on your arduino and put that in here.
+#define ARDUINO_VOLTAGE 4.484
 
-#define ONEWIRE_PARASITIC_POWER_MODE 0 // change to 1 to use parasitc power mode
+#define ONEWIRE_PIN 2
 
 #ifdef SENDTOCOSMENABLED
 #define COSM_APIKEY "" // fill in your API key
@@ -42,14 +50,21 @@ Andrew Oke - andrew@practicalmaker.com
 #endif
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+/*
+END VARIABLES YOU CAN CHANGE
+*/
 
-
+/*
+BEGIN LIBRARIES. TO ENABLE FUNCTIONALITY, UNCOMMENT THE LIBRARY. TO DISABLE FUNCTIONALITY COMMENT LIBRARY
+*Note: If you've enabled something in the ENABLE VARIABLES and it's not working double check to make sure that it's library is also uncommented.
+ie. If you uncomment DS18B20ENABLED but don't uncomment #include <OneWire.h> it won't work because the code checks to make sure they're both available before enabling
+*/
 #include <Arduino.h> // needs to be enabled
 #include <EEPROM.h> // needs to be enabled
 #include <Wire.h>
 //#include <SD.h>
-#include <SPI.h>
-#include <Ethernet.h>
+#include <SPI.h>  //needs to be uncommented if #include <Ethernet.h> is uncommented
+#include <Ethernet.h>  //if uncommented also uncomment #include "ethernetInterface.h"
 //#include <Tlc5940.h>
 //#include <tlc_animations.h>
 //#include <tlc_config.h>
@@ -59,28 +74,20 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 //#include <tlc_shifts.h>
 #include <OneWire.h>
 //#include <I2CLCD.h>
-//#include <DS1307.h>
+#include <DS1307.h>
 #include <Pachube.h>
-#include "variables.h"
+#include "variables.h" // needs to be enabled
 //#include "freemem.h"
 #include "supportFunctions.h"
 #include "control.h"
-#include "ethernetInterface.h"
-//#include "serialInterface.h"
+#include "ethernetInterface.h" // if uncommented also uncomment #include "control.h"
+#include "serialInterface.h" // if uncommented also uncomment #include "control.h"
 //#include "LCDPrint.h"
 #include "cosmFunctions.h"
 
-#ifdef ethernet_h
-EthernetServer server(80);
-#endif
-
-#ifdef I2CLCD_h
-I2CLCD lcd = I2CLCD(0x12, 20, 4);
-#endif
-
-#ifdef OneWire_h
-OneWire ds(ONEWIRE_PIN);
-#endif
+/*
+You shouldn't need to change anything below this line
+*/
 
 void setup() {
   for(int i = digital_pin_mem_start; i <= digital_pin_mem_end; i++){
@@ -90,17 +97,13 @@ void setup() {
   #ifdef SERIALON
     Serial.begin(9600);
   #endif 
+
   #ifdef __SD_H__
-  SD.begin();
-  #endif
-  
-  #ifdef TwoWire_h
-  Wire.begin();
+    SD.begin();
   #endif
   
   #ifdef ethernet_h
-  Ethernet.begin(mac, ip);
-  server.begin();
+    Ethernet.begin(mac, ip);
   #endif  
   
   #ifdef I2CLCD_h
@@ -145,7 +148,7 @@ void loop() {
     }
   #endif  
 
-  #if DEBUG == 1 && DEBUGFREEMEMORY == 1
+  #ifdef DEBUG && DEBUGFREEMEMORY
   Serial.print("Free Memory: ");
   Serial.println(availableMemory());
   #endif

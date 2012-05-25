@@ -1,6 +1,8 @@
 #ifdef client_h
 void ethernetWiznetW5100Interface() {
   EthernetServer server(80);
+  server.begin();
+  
   char ethernetCommandString[BUFFERSIZE];
   int index = 0;
   char *ethernetReturnData;
@@ -39,7 +41,7 @@ void ethernetWiznetW5100Interface() {
         String jsonpCallbackString = String(jsonpCallback);
         
 
-        #if DEBUGETHERNETQUERYSTRING == 1
+        #ifdef DEBUGETHERNETQUERYSTRING
                 Serial.println(ethernetCommandString);
                 Serial.println(commandString);
                 Serial.println(jsonpCallbackString);
@@ -52,7 +54,7 @@ void ethernetWiznetW5100Interface() {
 
         ethernetReturnData = control(commandString);
         
-        #if DEBUGETHERNETRETURNDATA == 1
+        #ifdef DEBUGETHERNETRETURNDATA 
           Serial.print(jsonpCallbackString);
           Serial.print("(");
           Serial.print(ethernetReturnData);

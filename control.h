@@ -1152,7 +1152,7 @@ char *control(char *commandString) {
     int tlc_pin_num = atoi(strtok(NULL, "/"));
     int tlc_action = atoi(strtok(NULL, "/"));
     
-    #if DEBUG == 1
+    #ifdef DEBUG
       Serial.print("tlc_pin_num ");
       Serial.println(tlc_pin_num);
       Serial.print("tlc_action ");

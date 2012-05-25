@@ -1,4 +1,4 @@
-#if DEBUGFREEMEMORY == 1
+#ifdef DEBUGFREEMEMORY
 // this function will return the number of bytes currently free in RAM
 // written by David A. Mellis
 // based on code by Rob Faludi http://www.faludi.com

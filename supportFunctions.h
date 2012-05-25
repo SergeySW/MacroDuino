@@ -251,7 +251,7 @@ void runDS1307Macro(unsigned int mem_address){
         if(rtc_time < (time_start + EEPROM.read(mem_address + 9))) { //fade in
           if(EEPROM.read(mem_address + 7) <= 13) {
             int pwm_value = (rtc_time - time_start) * (EEPROM.read(mem_address + 8) / EEPROM.read(mem_address + 9));
-            #if DEBUG == 1
+            #ifdef DEBUG
               Serial.print("PWM Fade In: ");
               Serial.println(pwm_value);
             #endif
@@ -259,13 +259,13 @@ void runDS1307Macro(unsigned int mem_address){
           }
         } else if(rtc_time > (time_stop - EEPROM.read(mem_address + 9))) { //fade out
           int pwm_value = (time_stop - rtc_time) * (EEPROM.read(mem_address + 8) / EEPROM.read(mem_address + 9));
-          #if DEBUG == 1
+          #ifdef DEBUG
             Serial.print("PWM Fade Out: ");        
             Serial.println(pwm_value);
           #endif        
           analogWrite(EEPROM.read(mem_address + 7), pwm_value);
         } else {
-          #if DEBUG == 1
+          #ifdef DEBUG
             Serial.print("PWM On at: ");
             Serial.println(EEPROM.read(mem_address + 8));
           #endif
@@ -330,13 +330,13 @@ int getDS18B20Temp(int device_num) {
     addr[i] = EEPROM.read((onewire_addresses_memstart + (onewire_addresses_bytes * device_num) + i)); 
   }
 
-#if DEBUG == 1
+#ifdef DEBUG
   if ( OneWire::crc8( addr, 7) != addr[7]) {
     Serial.print("CRC is not valid!\n");
   }
 #endif
 
-#if DEBUG == 1
+#ifdef DEBUG
   if ( addr[0] != 0x28) {
     Serial.print("Device is not a DS18S20 family device.\n");
   }

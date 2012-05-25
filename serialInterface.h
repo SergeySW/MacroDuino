@@ -7,7 +7,7 @@ void serialInterface() {
   while(Serial.available() > 0) {	
     inByte = Serial.read();
     serialCommandString[index] = inByte;
-    #if DEBUG == 1
+    #ifdef DEBUG
       Serial.print("Received: ");
       Serial.println(serialCommandString[index]);
     #endif
