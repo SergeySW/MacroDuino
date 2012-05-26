@@ -10,7 +10,7 @@ BEGIN ENABLE VARIABLES. UNCOMMENT TO ENABLE, COMMENT TO DISABLE
 //#define DEBUGETHERNETQUERYSTRING
 //#define DEBUGETHERNETRETURNDATA
 
-#define SERIALON  // if uncommented also uncomment #include "control.h" AND #include "serialInterface.h"
+//#define SERIALON  // if uncommented also uncomment #include "control.h" AND #include "serialInterface.h"
 //uncomment to enable things like digitalRead, digitalWrite and analogWrite
 #define DIGITALPINSENABLED
 //uncomment to enable analogRead
@@ -24,9 +24,9 @@ BEGIN ENABLE VARIABLES. UNCOMMENT TO ENABLE, COMMENT TO DISABLE
 //uncomment to enable pcf8574a
 #define PCF8574AENABLED
 //uncomment if you want to enable macros
-#define MACROSENABLED
+//#define MACROSENABLED
 //uncomment to enable sending data to COSM
-//#define SENDTOCOSMENABLED
+#define SENDTOCOSMENABLED
 //uncomment to have readings in celsius
 //#define CELSIUS
 //uncomment to use 1wire parasitic power mode
