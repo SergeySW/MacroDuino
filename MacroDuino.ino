@@ -26,9 +26,9 @@ BEGIN ENABLE VARIABLES. UNCOMMENT TO ENABLE, COMMENT TO DISABLE
 //uncomment if you want to enable macros
 //#define MACROSENABLED
 //uncomment to enable sending data to COSM
-#define SENDTOCOSMENABLED
+//#define SENDTOCOSMENABLED
 //uncomment to have readings in celsius
-//#define CELSIUS
+#define CELSIUS
 //uncomment to use 1wire parasitic power mode
 //#define ONEWIRE_PARASITIC_POWER_MODE
 /*
