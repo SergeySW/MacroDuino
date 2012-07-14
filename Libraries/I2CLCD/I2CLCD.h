@@ -5,7 +5,7 @@
 #ifndef I2CLCD_h
 #define I2CLCD_h
 
-#include <WProgram.h>
+#include <Arduino.h>
 #include <inttypes.h>
 
 #define BACKLIGHT_ON 0

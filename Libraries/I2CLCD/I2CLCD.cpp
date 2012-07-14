@@ -41,8 +41,8 @@ void I2CLCD::init()
 
 void I2CLCD::command(uint8_t value) {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(value);
+  Wire.write(0xfe);
+  Wire.write(value);
   Wire.endTransmission();
   delay(1);
 }
@@ -50,8 +50,8 @@ void I2CLCD::command(uint8_t value) {
 void I2CLCD::clear()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x01);  // clear display, set cursor position to zero
+  Wire.write(0xfe);
+  Wire.write(0x01);  // clear display, set cursor position to zero
   Wire.endTransmission();
   delay(2);
 }
@@ -62,8 +62,8 @@ void I2CLCD::write(const char* b)
 	Wire.beginTransmission(_adr);
 	while (*b)
 	{
-		if (*b == 0xfe || *b == 0xff) Wire.send(0xfe);
-			Wire.send(*b++); // sends one byte
+		if (*b == 0xfe || *b == 0xff) Wire.write(0xfe);
+			Wire.write(*b++); // sends one byte
 	}
 	Wire.endTransmission(); // stop transmitting
 	delay(1);
@@ -81,8 +81,8 @@ void I2CLCD::write(int x)
 void I2CLCD::write(uint8_t value)
 {
 	Wire.beginTransmission(_adr);
-	if (value == 0xfe || value == 0xff) Wire.send(0xfe);
-		Wire.send(value); // sends one byte
+	if (value == 0xfe || value == 0xff) Wire.write(0xfe);
+		Wire.write(value); // sends one byte
 	Wire.endTransmission(); // stop transmitting
 	delay(1);
 }
@@ -96,9 +96,9 @@ void I2CLCD::setCursor(int row, int col)
 void I2CLCD::backlight(uint8_t value)
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xff);
-  Wire.send(0x01);
-  Wire.send(value);
+  Wire.write(0xff);
+  Wire.write(0x01);
+  Wire.write(value);
   Wire.endTransmission();
   delay(1);
 }
@@ -106,8 +106,8 @@ void I2CLCD::backlight(uint8_t value)
 void I2CLCD::cursorOff()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x0c);
+  Wire.write(0xfe);
+  Wire.write(0x0c);
   Wire.endTransmission();
   delay(1);
 
@@ -116,8 +116,8 @@ void I2CLCD::cursorOff()
 void I2CLCD::cursorOn()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x0e);
+  Wire.write(0xfe);
+  Wire.write(0x0e);
   Wire.endTransmission();
   delay(1);
 
@@ -126,8 +126,8 @@ void I2CLCD::cursorOn()
 void I2CLCD::displayOff()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x08);
+  Wire.write(0xfe);
+  Wire.write(0x08);
   Wire.endTransmission();
   delay(1);
 }
@@ -135,8 +135,8 @@ void I2CLCD::displayOff()
 void I2CLCD::displayOn()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x0c);
+  Wire.write(0xfe);
+  Wire.write(0x0c);
   Wire.endTransmission();
   delay(1);
 }
@@ -144,8 +144,8 @@ void I2CLCD::displayOn()
 void I2CLCD::blinkOn()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x0f);
+  Wire.write(0xfe);
+  Wire.write(0x0f);
   Wire.endTransmission();
   delay(1);
 }
@@ -153,8 +153,8 @@ void I2CLCD::blinkOn()
 void I2CLCD::blinkOff()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x0e);
+  Wire.write(0xfe);
+  Wire.write(0x0e);
   Wire.endTransmission();
   delay(1);
 }
@@ -163,8 +163,8 @@ void I2CLCD::blinkOff()
 void I2CLCD::cursorRight()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x14);
+  Wire.write(0xfe);
+  Wire.write(0x14);
   Wire.endTransmission();
   delay(1);
 }
@@ -175,8 +175,8 @@ void I2CLCD::cursorRight()
 void I2CLCD::cursorLeft()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x14);
+  Wire.write(0xfe);
+  Wire.write(0x14);
   Wire.endTransmission();
   delay(1);
 }
@@ -184,8 +184,8 @@ void I2CLCD::cursorLeft()
 void I2CLCD::progCharMode()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x40);
+  Wire.write(0xfe);
+  Wire.write(0x40);
   Wire.endTransmission();
   delay(1);
 }
@@ -193,8 +193,8 @@ void I2CLCD::progCharMode()
 void I2CLCD::normalMode()
 {
   Wire.beginTransmission(_adr);
-  Wire.send(0xfe);
-  Wire.send(0x80);
+  Wire.write(0xfe);
+  Wire.write(0x80);
   Wire.endTransmission();
   delay(1);
 }
@@ -202,22 +202,22 @@ void I2CLCD::normalMode()
 uint8_t I2CLCD::readEEPROM(uint8_t addr)
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x02);
-	Wire.send(addr);
+	Wire.write(0xff);
+	Wire.write(0x02);
+	Wire.write(addr);
 	Wire.endTransmission();
 	delay(1);
 	Wire.requestFrom((int)_adr,1); // ask for the byte
-	return Wire.receive(); // and return it
+	return Wire.read(); // and return it
 }
 
 void I2CLCD::writeEEPROM(uint8_t addr, uint8_t value)
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x03);
-	Wire.send(addr);
-	Wire.send(value);
+	Wire.write(0xff);
+	Wire.write(0x03);
+	Wire.write(addr);
+	Wire.write(value);
 	Wire.endTransmission();
 	delay(1);
 }
@@ -225,9 +225,9 @@ void I2CLCD::writeEEPROM(uint8_t addr, uint8_t value)
 void I2CLCD::zeroTermString(uint8_t addr)
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x04);
-	Wire.send(addr);
+	Wire.write(0xff);
+	Wire.write(0x04);
+	Wire.write(addr);
 	Wire.endTransmission();
 	delay(1);
 }
@@ -235,8 +235,8 @@ void I2CLCD::zeroTermString(uint8_t addr)
 void I2CLCD::resetEEPROM()
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0xf0);
+	Wire.write(0xff);
+	Wire.write(0xf0);
 	Wire.endTransmission();
 	delay(1);
 }
@@ -244,8 +244,8 @@ void I2CLCD::resetEEPROM()
 void I2CLCD::reset()
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0xf1);
+	Wire.write(0xff);
+	Wire.write(0xf1);
 	Wire.endTransmission();
 	delay(1);
 }
@@ -256,27 +256,27 @@ void I2CLCD::reset()
 uint8_t I2CLCD::keysInBuffer()
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x10);
+	Wire.write(0xff);
+	Wire.write(0x10);
 	Wire.endTransmission();
 	delay(50);
 	Wire.requestFrom((int)_adr,1); // ask for the byte
 	delay(50);
-	return Wire.receive(); // and return it
+	return Wire.read(); // and return it
 }
 
 uint8_t I2CLCD::getKey()
 {
 	uint8_t key = 0x00;
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x11);
+	Wire.write(0xff);
+	Wire.write(0x11);
 	Wire.endTransmission();
 	//needs a higher delay otherwise it won't reliably return the key
 	delay(40);
 	Wire.requestFrom((int)_adr, 1); // ask for the byte
 	if(Wire.available()) {
-		key = Wire.receive(); // and return it
+		key = Wire.read(); // and return it
 	}
 	if(key != 0x00){
 		return key;
@@ -291,19 +291,19 @@ uint8_t I2CLCD::getKey()
 uint8_t I2CLCD::keyDown()
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x12);
+	Wire.write(0xff);
+	Wire.write(0x12);
 	Wire.endTransmission();
 	delay(1);
 	Wire.requestFrom((int)_adr,1); // ask for the byte
-	return Wire.receive(); // and return it
+	return Wire.read(); // and return it
 }
 
 void I2CLCD::clearBuffer()
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x13);
+	Wire.write(0xff);
+	Wire.write(0x13);
 	Wire.endTransmission();
 	delay(1);
 }
@@ -311,20 +311,20 @@ void I2CLCD::clearBuffer()
 uint8_t I2CLCD::readKeysInBuffer(uint8_t num_keys)
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x14);
-	Wire.send(num_keys);
+	Wire.write(0xff);
+	Wire.write(0x14);
+	Wire.write(num_keys);
 	Wire.endTransmission();
 	delay(1);
 	Wire.requestFrom((int)_adr,1); // ask for the byte
-	return Wire.receive(); // and return it
+	return Wire.read(); // and return it
 }
 
 void I2CLCD::interruptOn()
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x16);
+	Wire.write(0xff);
+	Wire.write(0x16);
 	Wire.endTransmission();
 	delay(1);
 }
@@ -332,8 +332,8 @@ void I2CLCD::interruptOn()
 void I2CLCD::interruptOff()
 {
 	Wire.beginTransmission(_adr);
-	Wire.send(0xff);
-	Wire.send(0x16);
+	Wire.write(0xff);
+	Wire.write(0x16);
 	Wire.endTransmission();
 	delay(1);
 }
