@@ -42,6 +42,8 @@ BELOW ARE VARIABLES YOU CAN CHANGE
 #define ARDUINO_VOLTAGE 4.484
 
 #define ONEWIRE_PIN 2
+#define PH_PIN 3
+#define ORP_PIN 2
 
 #ifdef SENDTOCOSMENABLED
 #define COSM_APIKEY "" // fill in your API key
@@ -73,7 +75,7 @@ ie. If you uncomment DS18B20ENABLED but don't uncomment #include <OneWire.h> it 
 //#include <tlc_servos.h>
 //#include <tlc_shifts.h>
 #include <OneWire.h>
-//#include <I2CLCD.h>
+#include <I2CLCD.h>
 #include <DS1307.h>
 #include <Cosm.h>
 #include "variables.h" // needs to be enabled
@@ -82,7 +84,7 @@ ie. If you uncomment DS18B20ENABLED but don't uncomment #include <OneWire.h> it 
 #include "control.h"
 #include "ethernetInterface.h" // if uncommented also uncomment #include "control.h"
 #include "serialInterface.h" // if uncommented also uncomment #include "control.h"
-//#include "LCDPrint.h"
+#include "LCDPrint.h"
 #include "cosmFunctions.h"
 
 /*
@@ -105,8 +107,9 @@ void setup() {
   #ifdef ethernet_h
     Ethernet.begin(mac, ip);
   #endif  
-  
+
   #ifdef I2CLCD_h
+  I2CLCD lcd = I2CLCD(0x12, 20, 4);
   lcd.init();
   lcd.backlight(0);
   lcd.cursorOff();

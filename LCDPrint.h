@@ -13,7 +13,7 @@ void printToLCD() {
   int month = RTC.get(DS1307_MTH,false);
   int year = RTC.get(DS1307_YR,false);
 
-  #if DS1307_h && I2CLCDENABLED == 1
+  #ifdef DS1307_h && I2CLCD_h
     if(EEPROM.read(i2clcd_time_display) == 1) {    
       if(EEPROM.read(display_time_as) == 0) {
         lcd.setCursor(EEPROM.read(i2clcd_cursor_col), EEPROM.read(i2clcd_cursor_row));
@@ -86,7 +86,7 @@ void printToLCD() {
       }    
       lcd.write((temp % 100));
       lcd.write(degree_symbol);
-      #if CELSIUS == 1 
+      #ifdef CELSIUS
         lcd.write("C");
       #else
         lcd.write("F");
@@ -104,7 +104,7 @@ void printToLCD() {
       }    
       lcd.write((temp % 100));
       lcd.write(degree_symbol);
-      #if CELSIUS == 1 
+      #ifdef CELSIUS
         lcd.write("C");
       #else
         lcd.write("F");
@@ -122,7 +122,7 @@ void printToLCD() {
       }
       lcd.write((temp % 100)); 
       lcd.write(degree_symbol);
-      #if CELSIUS == 1 
+      #ifdef CELSIUS
         lcd.write("C");
       #else
         lcd.write("F");
@@ -141,7 +141,7 @@ void printToLCD() {
     }
   #endif
   
-    #if ORPENABLED && I2CLCDENABLED == 1
+    #ifdef ORPENABLED && I2CLCD_h
     if(EEPROM.read(display_ORP) == 1) {
       lcd.setCursor(EEPROM.read(display_ORP_col), EEPROM.read(display_ORP_row));
       lcd.write("ORP:");

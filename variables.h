@@ -75,6 +75,7 @@ uint8_t degree_symbol = 0xDF;
 
 unsigned long currentMillis = millis();
 unsigned long previousMillis = 0;
+unsigned long interval = 1000;
 
 
 #define IP_FIRST_OCTET 39
