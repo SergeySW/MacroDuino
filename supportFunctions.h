@@ -367,7 +367,7 @@ int getDS18B20Temp(int device_num) {
   }
   Tc_100 = (6 * TReading) + TReading / 4;    // multiply by (100 * 0.0625) or 6.25
 
-#ifdef CELSIUS
+#ifndef CELSIUS
   Tc_100 = c2f(Tc_100);
 #endif 
 
